@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TTH Loading Animation Preview</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      background-color: #000; /* Set background */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #lottie {
+      width: 80vw;
+      height: 80vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="lottie"></div>
+
+  <script>
+    // Load the animation from the external JSON file
+    async function loadAnimation() {
+      try {
+        const response = await fetch('TTH_animation.json');
+        if (!response.ok) {
+          throw new Error(`Failed to load animation: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        
+        // Filter out the problematic layer with refId:0 that has no corresponding asset
+        data.layers = data.layers.filter(layer => {
+          if (layer.ty === 0 && layer.refId === 0) {
+            console.log('Removing problematic layer:', layer.nm);
+            return false;
+          }
+          return true;
+        });
+        
+        // Create animation with loop set to false
+        const anim = lottie.loadAnimation({
+          container: document.getElementById('lottie'),
+          renderer: 'svg',
+          loop: false, // Set to false to prevent looping
+          autoplay: true,
+          animationData: data
+        });
+        
+        // Store animation completion state in localStorage
+        anim.addEventListener('complete', () => {
+          localStorage.setItem('animationPlayed', 'true');
+        });
+        
+        // You can also add this to skip the animation if it was already played
+        // Uncomment the following if you want to implement this behavior
+        /*
+        if (localStorage.getItem('animationPlayed') === 'true') {
+          // If already played, you could:
+          // 1. Skip to the end
+          // anim.goToAndStop(anim.totalFrames - 1, true);
+          // 2. Or hide it completely
+          // document.getElementById('lottie').style.display = 'none';
+        }
+        */
+      } catch (error) {
+        console.error('Failed to load animation:', error);
+        document.getElementById('lottie').innerHTML = '<p style="color: white;">Error: ' + error.message + '</p>';
+      }
+    }
+    
+    // Start loading the animation when the document is ready
+    document.addEventListener('DOMContentLoaded', loadAnimation);
+  </script>
+</body>
+</html>
