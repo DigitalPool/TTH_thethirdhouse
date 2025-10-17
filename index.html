@@ -9,69 +9,359 @@
     html, body {
       margin: 0;
       height: 100%;
-      background-color: #000; /* Set background */
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background-color: #000;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+    
+    /* Main container for the curtain and logo */
+    .curtain-section {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      background-color: transparent; /* Let content show through between curtains */
+    }
+    
+    /* Curtain panels that will split */
+    .curtain {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background-color: #000;
+      transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+      z-index: 10;
+    }
+
+    /* When we want curtains above the logo to see the split */
+    .curtain-front .curtain {
+      z-index: 30;
+    }
+    
+    .curtain-left {
+      left: 0;
+      transform: translateX(0);
+    }
+    
+    .curtain-right {
+      right: 0;
+      transform: translateX(0);
+    }
+    
+    /* Logo container positioned in the center */
+    .logo-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+    }
+    
     #lottie {
       width: 80vw;
       height: 80vh;
+      cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+    
+    .click-hint {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      text-align: center;
+      z-index: 25;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 20px;
+    }
+    
+    /* Website content that will be revealed */
+    .content {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      color: black;
+      padding: 40px;
+        display: none;
+        opacity: 0;
+      overflow-y: auto;
+      z-index: 5;
+    }
+    
+    .content.visible {
+        display: block;
+      opacity: 1;
+        animation: fadeIn 0.8s ease 0.5s forwards;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: black;
+    }
+    
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .feature-card h3 {
+      color: #ff9a00;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    
+    .reset-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #ff9a00, #ff6a00);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+    }
+/*     
+    .reset-btn.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .reset-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    } */
+    
+    /* Animation classes */
+    .curtain-open .curtain-left {
+      transform: translateX(-100%);
+    }
+    
+    .curtain-open .curtain-right {
+      transform: translateX(100%);
+    }
+    
+    .curtain-open .logo-container {
+      pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    /* Pulsing animation for the logo */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite ease-in-out;
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .features {
+        grid-template-columns: 1fr;
+      }
+      
+      .click-hint {
+        font-size: 1rem;
+        bottom: 5%;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="lottie"></div>
+  <!-- Curtain section with logo -->
+  <div class="curtain-section" id="curtainSection">
+    <div class="curtain curtain-left"></div>
+    <div class="curtain curtain-right"></div>
+    
+    <div class="logo-container">
+      <div id="lottie"></div>
+      <div class="click-hint" id="clickHint">Click to enter website</div>
+    </div>
+  </div>
+
+  <!-- Website content to be revealed -->
+  <div class="content" id="content">
+    <h1>Welcome to Our Website</h1>
+    <p>This content was revealed after the curtain animation. The logo section split into two parts and moved away to show what's underneath.</p>
+    <p>You can use this effect as an engaging introduction to your website, portfolio, or product presentation.</p>
+    
+    <div class="features">
+      <div class="feature-card">
+        <h3>Creative Design</h3>
+        <p>Our designs are crafted with attention to detail and user experience in mind.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Modern Animation</h3>
+        <p>We use cutting-edge animation techniques to create engaging user interactions.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Responsive Layout</h3>
+        <p>All our designs work perfectly on any device, from mobile to desktop.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- <button class="reset-btn" id="resetBtn">Reset Animation</button> -->
 
   <script>
-    // Load the animation from the external JSON file
-    async function loadAnimation() {
-      try {
-        const response = await fetch('TTH_animation.json');
-        if (!response.ok) {
-          throw new Error(`Failed to load animation: ${response.status} ${response.statusText}`);
-        }
-        const data = await response.json();
+    const curtainSection = document.getElementById('curtainSection');
+    const lottieContainer = document.getElementById('lottie');
+    const clickHint = document.getElementById('clickHint');
+    const content = document.getElementById('content');
+    const resetBtn = document.getElementById('resetBtn');
+    const logoContainer = document.querySelector('.logo-container');
+    let isOpen = false;
+    let animation;
+    let animationComplete = false;
+
+    // Load the actual TTH animation
+    function loadAnimation() {
+      // Load animation from the JSON file
+      animation = lottie.loadAnimation({
+        container: lottieContainer,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: 'TTH_animation.json' // Path to your animation file
+      });
+      
+      // Handle animation loading error
+      animation.addEventListener('DOMLoaded', () => {
+        console.log('Animation loaded successfully');
+      });
+      
+      animation.addEventListener('data_failed', () => {
+        console.error('Failed to load animation JSON file');
+      });
+      
+      // When animation completes, add pulsing effect and click hint
+      animation.addEventListener('complete', () => {
+        console.log('Animation completed');
+        animationComplete = true;
         
-        // Filter out the problematic layer with refId:0 that has no corresponding asset
-        data.layers = data.layers.filter(layer => {
-          if (layer.ty === 0 && layer.refId === 0) {
-            console.log('Removing problematic layer:', layer.nm);
-            return false;
-          }
-          return true;
-        });
+        // Add pulsing animation to invite clicking
+        lottieContainer.classList.add('pulse');
         
-        // Create animation with loop set to false
-        const anim = lottie.loadAnimation({
-          container: document.getElementById('lottie'),
-          renderer: 'svg',
-          loop: false, // Set to false to prevent looping
-          autoplay: true,
-          animationData: data
-        });
+        // Show click hint
+        clickHint.style.opacity = '1';
+        
+        // Make the logo clickable
+        lottieContainer.style.cursor = 'pointer';
+        logoContainer.style.cursor = 'pointer';
         
         // Store animation completion state in localStorage
-        anim.addEventListener('complete', () => {
-          localStorage.setItem('animationPlayed', 'true');
-        });
+        localStorage.setItem('animationPlayed', 'true');
+      });
+    }
+
+    // Open curtain on logo click - attach to both containers for better reliability
+    function openCurtain() {
+      if (!isOpen && animationComplete) {
+        console.log('Opening curtain');
+        // Ensure curtains are above the logo so the split is visible
+        curtainSection.classList.add('curtain-front');
         
-        // You can also add this to skip the animation if it was already played
-        // Uncomment the following if you want to implement this behavior
-        /*
-        if (localStorage.getItem('animationPlayed') === 'true') {
-          // If already played, you could:
-          // 1. Skip to the end
-          // anim.goToAndStop(anim.totalFrames - 1, true);
-          // 2. Or hide it completely
-          // document.getElementById('lottie').style.display = 'none';
-        }
-        */
-      } catch (error) {
-        console.error('Failed to load animation:', error);
-        document.getElementById('lottie').innerHTML = '<p style="color: white;">Error: ' + error.message + '</p>';
+        curtainSection.classList.add('curtain-open');
+        content.classList.add('visible');
+        resetBtn.classList.add('visible');
+        isOpen = true;
+        
+        // Stop the pulsing animation
+        lottieContainer.classList.remove('pulse');
+        clickHint.style.opacity = '0';
+        
+          // After curtain animation completes, hide the curtain section
+          setTimeout(() => {
+            curtainSection.style.pointerEvents = 'none';
+            curtainSection.style.zIndex = '1';
+            curtainSection.classList.remove('curtain-front');
+            console.log('Curtain section hidden, content should be visible now');
+          }, 1200); // Match the curtain transition duration
+      } else if (!animationComplete) {
+        console.log('Animation not complete yet, please wait');
       }
     }
+    
+    // Attach click handlers to multiple elements for better reliability
+    lottieContainer.addEventListener('click', openCurtain);
+    logoContainer.addEventListener('click', openCurtain);
+    
+    // Reset animation
+    // resetBtn.addEventListener('click', function() {
+    //   console.log('Resetting animation');
+    //   curtainSection.classList.remove('curtain-open');
+    //     curtainSection.style.pointerEvents = 'auto';
+    //     curtainSection.style.zIndex = '100';
+    //     curtainSection.classList.remove('curtain-front');
+    //   content.classList.remove('visible');
+    //   resetBtn.classList.remove('visible');
+    //   isOpen = false;
+    //   animationComplete = false;
+      
+    //   // Restart the Lottie animation
+    //   if (animation) {
+    //     animation.goToAndPlay(0);
+        
+    //     // Remove pulsing effect until animation completes again
+    //     lottieContainer.classList.remove('pulse');
+    //     clickHint.style.opacity = '0';
+    //   }
+    // });
     
     // Start loading the animation when the document is ready
     document.addEventListener('DOMContentLoaded', loadAnimation);

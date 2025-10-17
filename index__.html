@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo Split Reveal Animation</title>
+<style>
+html, body {
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
+	font-family: sans-serif;
+}
+
+/* === MAIN SITE (hidden beneath intro) === */
+.main-content {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: radial-gradient(circle at center, #f6f6f6, #ccc);
+	color: #222;
+	font-size: 2rem;
+}
+
+/* === INTRO OVERLAY === */
+.intro {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+/* two halves of intro */
+.half {
+	position: absolute;
+	top: 0;
+	width: 50%;
+	height: 100%;
+	background: #111;
+	transition: transform 1.2s cubic-bezier(.77,0,.175,1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* left and right positioning */
+.left { left: 0; }
+.right { right: 0; }
+
+/* logo in the center */
+.logo {
+	position: relative;
+	z-index: 5;
+	color: #C7A23A;
+	font-size: 3rem;
+	font-weight: bold;
+	letter-spacing: 3px;
+	cursor: pointer;
+	user-select: none;
+	transition: transform 0.6s ease;
+}
+
+/* When clicked (active) */
+.intro.active .left {
+	transform: translateX(-100%);
+}
+
+.intro.active .right {
+	transform: translateX(100%);
+}
+
+.intro.active .logo {
+	opacity: 0;
+	transform: scale(0.8);
+	transition: all 0.5s ease;
+}
+
+/* optional fade-out of the whole intro after animation */
+.intro.fade-out {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.6s ease;
+}
+</style>
+</head>
+<body>
+
+<!-- INTRO (logo + split panels) -->
+<div class="intro" id="intro">
+	<div class="half left"></div>
+	<div class="half right"></div>
+	<div class="logo" id="logo">TTH</div>
+</div>
+
+<!-- WEBSITE CONTENT -->
+<div class="main-content">
+	Welcome to the Website 🌿
+</div>
+
+<script>
+const intro = document.getElementById('intro');
+const logo = document.getElementById('logo');
+
+logo.addEventListener('click', () => {
+	intro.classList.add('active');
+	
+	// Optional: fade out intro after split animation
+	setTimeout(() => {
+		intro.classList.add('fade-out');
+		document.body.style.overflow = 'auto'; // allow scrolling after reveal
+	}, 1300);
+});
+</script>
+
+</body>
+</html>
