@@ -10,16 +10,29 @@
 			margin: 0;
 			background: #ffffff;
 			display: flex;
+			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			height: 100vh;
+			min-height: 100vh;
 			font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+			position: relative;
 		}
 
 		#na-preview {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			transition: opacity 700ms ease;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		#na-preview.fade-out {
+			opacity: 0;
+			pointer-events: none;
 		}
 
 		svg {
@@ -40,6 +53,19 @@
 			stroke-width: 150px;
 			stroke-linecap: round;
 			stroke-linejoin: round;
+		}
+
+		#content {
+			opacity: 0;
+			transition: opacity 700ms ease;
+			max-width: 960px;
+			padding: 24px;
+			text-align: center;
+			color: #111;
+		}
+
+		#content.visible {
+			opacity: 1;
 		}
 	</style>
 </head>
@@ -84,10 +110,23 @@
 	</svg>
 </div>
 
+<main id="content">
+	<h1>Welcome to Noura Esthetica</h1>
+	<p>
+		Where thoughtful design meets intentional motion. Explore the latest work,
+		collaborations, and experiments once the monogram completes its reveal.
+	</p>
+	<p>
+		Scroll to discover featured projects, process notes, and upcoming releases.
+	</p>
+</main>
+
 <script>
 	document.addEventListener("DOMContentLoaded", () => {
 		const strokeN = document.getElementById("stroke-n");
 		const strokeA = document.getElementById("stroke-a");
+		const preview = document.getElementById("na-preview");
+		const content = document.getElementById("content");
 		if (!strokeN || !strokeA) return;
 
 		function setupStroke(el) {
@@ -106,6 +145,7 @@
 		const nDuration = 900;
 		const between = 200;
 		const aDuration = 900;
+		const fadeDelay = nDuration + between + aDuration + 200;
 
 		strokeN.style.transition = `stroke-dashoffset ${nDuration}ms ease`;
 		strokeN.style.strokeDashoffset = 0;
@@ -114,6 +154,12 @@
 			strokeA.style.transition = `stroke-dashoffset ${aDuration}ms ease`;
 			strokeA.style.strokeDashoffset = 0;
 		}, nDuration + between);
+
+		// Fade out the logo overlay and reveal page content after the draw finishes
+		setTimeout(() => {
+			preview.classList.add("fade-out");
+			content.classList.add("visible");
+		}, fadeDelay);
 	});
 </script>
 
