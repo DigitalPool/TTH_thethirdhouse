@@ -42,7 +42,8 @@
 
 		/* Filled logo letters revealed by the masks */
 		#logo-n,
-		#logo-a {
+		#logo-a,
+		#logo-l {
 			fill: #000;
 		}
 
@@ -50,7 +51,7 @@
 		.mask-stroke {
 			fill: none;
 			stroke: #fff;
-			stroke-width: 150px;
+			stroke-width: 100px;
 			stroke-linecap: round;
 			stroke-linejoin: round;
 		}
@@ -89,7 +90,16 @@
 				<polyline
 					id="stroke-a"
 					class="mask-stroke"
-					points="55.97 859.16 305.6 849.54 195.3 882.44 195.3 270.95 578.45 882.44 407.71 849.54 648.11 841.8 83.11 671.51 648.11 667.64"
+					points="83.11 850 282 850 186.11 846.35 83.11 820.2 246.25 806.6 161.53 776.79 228.1 763.72 196.57 763.72 201.28 299.85 323.65 475.57 554.8 831.7 476.35 791.96 579.38 787.77 431.04 836.41 609.71 817.58 421.97 850 646.84 850 72.63 829.61 97.21 676.38 97.21 676.38"
+				/>
+			</mask>
+
+			<mask id="mask-l" maskUnits="userSpaceOnUse">
+				<rect width="100%" height="100%" fill="black" />
+				<polyline
+					id="stroke-l"
+					class="mask-stroke"
+					points="83.11 677 569 668 586 699"
 				/>
 			</mask>
 		</defs>
@@ -104,7 +114,13 @@
 		<path
 			id="logo-a"
 			mask="url(#mask-a)"
-			d="M596.37,822.77c-11.49-8.48-22.87-17.58-31.57-29.1-11.25-14.92-21.75-29.3-32.07-45.01l-75.21-114.51c-2.25-3.43-4.1-6.54-5.97-10.02l-200.97-305.83s-2.67-5.35-14.25-5.35-58.78,2.46-58.78,2.46l-.59,2.5-.16,106.61-.18,336.34c-2.93,19.2-22.29,36.95-36.37,48.78-25.53,21.44-43.05,17.44-53.95,31.56-4.54,5.87-4.31,12.97,1.18,17.96h191.4s-.04-21.55-.04-21.55c-19.38-3.3-41.3-10.94-47.98-31.1-2.82-9.17-4.27-18.32-4.15-28.2l1.04-88.61h201s49.32,84.85,49.32,84.85c5.01,8.63,7.35,16.66,9.05,25.9-1.57,8.99-4.91,18.09-12.47,23.52-11.31,8.12-24.51,11.88-38.12,13.69l.29,21.31h196.04c4.52-27.74-17.19-21.97-36.49-36.2ZM228.1,655.06l3.12-260.33,176.49,260.26-179.61.07Z"
+			d="M596.37,822.77c-11.49-8.48-22.87-17.58-31.57-29.1-11.25-14.92-21.75-29.3-32.07-45.01l-75.21-114.51c-2.25-3.43-4.1-6.54-5.97-10.02l-200.97-305.83s-2.67-5.35-14.25-5.35-58.78,2.46-58.78,2.46l-.59,2.5-.16,106.61-.18,336.34c-2.93,19.2-22.29,36.95-36.37,48.78-25.53,21.44-43.05,17.44-53.95,31.56-4.54,5.87-4.31,12.97,1.18,17.96h191.4l-.04-21.55c-19.38-3.3-41.3-10.94-47.98-31.1-2.82-9.17-4.27-18.32-4.15-28.2l1.04-88.61h.35v-34.64l.55-46.09,2.57-214.24,139.83,206.2,36.66,54.06,20.67,34.71h.37l14.84,25.54,34.48,59.31c5.01,8.63,7.35,16.66,9.05,25.9-1.57,8.99-4.91,18.09-12.47,23.52-11.31,8.12-24.51,11.88-38.12,13.69l.29,21.31h196.04c4.52-27.74-17.19-21.97-36.49-36.2h0Z"
+		/>
+
+		<path
+			id="logo-l"
+			mask="url(#mask-l)"
+			d="M596.37,822.77c-5.75-4.24-11.46-8.63-16.83-13.41-5.37-4.78-10.39-9.93-14.74-15.69-11.25-14.92-21.75-29.3-32.07-45.01l-75.21-114.51c-2.25-3.43-4.1-6.54-5.97-10.02l-63.08,2.49,19.24,28.37h-179.61l.27-22.03-51.68,2.04-.07,125.86c-2.93,19.2-22.29,36.95-36.37,48.78-25.53,21.44-43.05,17.44-53.95,31.56-4.54,5.87-4.31,12.97,1.18,17.96h191.4l-.04-21.55c-19.38-3.3-41.3-10.94-47.98-31.1-2.82-9.17-4.27-18.32-4.15-28.2l1.04-88.61h201l14.84,25.54,34.48,59.31c5.01,8.63,7.35,16.66,9.05,25.9-1.57,8.99-4.91,18.09-12.47,23.52-11.31,8.12-24.51,11.88-38.12,13.69l.29,21.31h196.04c4.52-27.74-17.19-21.97-36.49-36.2Z"
 		/>
 
 	</svg>
@@ -125,9 +141,10 @@
 	document.addEventListener("DOMContentLoaded", () => {
 		const strokeN = document.getElementById("stroke-n");
 		const strokeA = document.getElementById("stroke-a");
+		const strokeL = document.getElementById("stroke-l");
 		const preview = document.getElementById("na-preview");
 		const content = document.getElementById("content");
-		if (!strokeN || !strokeA) return;
+		if (!strokeN || !strokeA || !strokeL) return;
 
 		function setupStroke(el) {
 			const length = el.getTotalLength();
@@ -138,6 +155,7 @@
 
 		setupStroke(strokeN);
 		setupStroke(strokeA);
+		setupStroke(strokeL);
 
 		// force layout
 		strokeN.getBoundingClientRect();
@@ -145,7 +163,9 @@
 		const nDuration = 900;
 		const between = 200;
 		const aDuration = 900;
-		const fadeDelay = nDuration + between + aDuration + 200;
+		const between_al = 0.01;
+		const lDuration = 900;
+		const fadeDelay = nDuration + between + aDuration + between_al + lDuration + 200;
 
 		strokeN.style.transition = `stroke-dashoffset ${nDuration}ms ease`;
 		strokeN.style.strokeDashoffset = 0;
@@ -154,6 +174,11 @@
 			strokeA.style.transition = `stroke-dashoffset ${aDuration}ms ease`;
 			strokeA.style.strokeDashoffset = 0;
 		}, nDuration + between);
+
+		setTimeout(() => {
+			strokeL.style.transition = `stroke-dashoffset ${lDuration}ms ease`;
+			strokeL.style.strokeDashoffset = 0;
+		}, nDuration + between + aDuration + between_al);
 
 		// Fade out the logo overlay and reveal page content after the draw finishes
 		setTimeout(() => {
